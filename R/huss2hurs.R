@@ -74,6 +74,8 @@ huss2hurs <- function(huss, ps, tas) {
         b <- subsetGrid(ws, members = x, drop = TRUE) %>% redim(member = FALSE) %>% extract2("Data") %>% array3Dto2Dmat()
         w <- a/(1 - a) # w = mixing (mass) ratio
         a <- 100 * w/b
+        a[a > 100] <- 100
+        a[a < 0] <- 0
         ps$Data <- mat2Dto3Darray(a, x = coords$x, y = coords$y)
         a <- b <- NULL
         return(ps)
