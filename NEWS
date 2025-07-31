@@ -32,3 +32,6 @@
  * Add .gitignore
  * Update R CMD check with roxygen2 7.1.2
  * Update examples
+ 
+## v0.3.0 (31 Jul 2025)
+ * New `advanced` -more accurate- implementation of `tdps2hurs`
