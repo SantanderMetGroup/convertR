@@ -17,27 +17,34 @@
 
 
 #' @title Relative humidity from Dew-point temperature
-#' @description Estimate the Relative humidity from Dew-point temperature and air temperaure
+#' @description Estimate the Relative humidity from Dew-point temperature and air temperature
 #' @param tdps Dew-point temperature
 #' @param tas Near-surface air temperature
 #' @param negatives.to.zero Logical flag indicating if estimated negative values should be truncated to zero \%. Default to TRUE.
+#' @param cap.to.hundred Logical flag indicating if estimated values above 100 should be truncated to 100 \%. Default to TRUE.
+#' @param method Character string indicating the calculation method to use. Options are \code{"basic"} or \code{"advanced"} (default).
 #' @return A climate4R CDM grid of estimated relative humidity (in \%)
-#' @author J. Bedia
+#' @author J. Bedia, C. Rodriguez Rumayor
 #' @template templateUnits
 #' @export
 #' @template templateRefPressure
 #' @import transformeR
-#' @references Lawrence, Mark G., 2005: The relationship between relative humidity and the dewpoint temperature in moist air: A simple conversion and applications. Bull. Amer. Meteor. Soc., 86, 225-233. https://dx.doi.org/10.1175/BAMS-86-2-225 
+#' @references For the basic approach: Lawrence, Mark G., 2005. The relationship between relative humidity and the dewpoint temperature in moist air: A simple conversion and applications. Bull. Amer. Meteor. Soc., 86, 225-233. https://dx.doi.org/10.1175/BAMS-86-2-225 
 #' @importFrom magrittr %>% %<>% extract2
 #' @importFrom udunits2 ud.are.convertible
 #' @importFrom utils packageVersion
 #' @seealso hurs2tdps, performing the inverse calculation to derive dew-point temperature from relative humidity and observed temperature
-#' @note The formula is a valid aproximation for moist air (RH>50\%), but can yield very inaccurate results otherwise, so use it with caution.
+#' @note The formula implemented in the \code{"basic"} method is a valid approximation for moist air (RH>50\%), but can yield very inaccurate results otherwise, so use it with caution. The \code{"advanced"} method corresponds to the implementation used by NOAA and ECMWF.
 #' @family derivation
 #' @family humidity
 
-tdps2hurs <- function(tdps, tas, negatives.to.zero = TRUE) {
+tdps2hurs <- function(tdps, tas, negatives.to.zero = TRUE, cap.to.hundred = TRUE, method = "advanced") {
     stopifnot(is.logical(negatives.to.zero))
+    stopifnot(is.logical(cap.to.hundred))
+    method <- match.arg(method, choices = c("basic", "advanced"), several.ok = FALSE)
+    if (method == "basic") {
+         warning("The 'basic' hurs estimation may be inaccurate. Check function documentation.")
+    }
     # Consistency checks:
     if (isMultigrid(tdps) | isMultigrid(tas)) stop("Multigrids are not an allowed input")
     stopifnot(isGrid(tdps) | isGrid(tas))
@@ -72,8 +79,15 @@ tdps2hurs <- function(tdps, tas, negatives.to.zero = TRUE) {
     l <- lapply(1:n.mem, function(x) {
         dp <- subsetGrid(tdps, members = x, drop = TRUE) %>% redim(member = FALSE) %>% extract2("Data") %>% array3Dto2Dmat()
         t <- subsetGrid(tas, members = x, drop = TRUE) %>% redim(member = FALSE) %>% extract2("Data") %>% array3Dto2Dmat()
-        aux <- 100 - 5*(t - dp)
+        if (method == "basic") {
+          aux <- 100 - 5*(t - dp)
+        } else {
+          e  <- 6.11 * 10.0 ^ (7.5 * dp / (237.3 + dp))  # vapour pressure
+          es <- 6.11 * 10.0 ^ (7.5 * t / (237.3 + t))  # saturated vapour pressure
+          aux <- (e / es) * 100
+        }
         if (isTRUE(negatives.to.zero)) aux[which(aux < 0)] <- 0
+        if (isTRUE(cap.to.hundred)) aux[which(aux > 100)] <- 100
         hurs$Data <- mat2Dto3Darray(aux, coords$x, coords$y)
         return(hurs)
     })
