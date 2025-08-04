@@ -30,7 +30,7 @@ A climate4R CDM grid of estimated relative humidity (in \%)
 Estimate the Relative humidity from Dew-point temperature and air temperature
 }
 \note{
-The formula implemented in the \code{"basic"} method is a valid approximation for moist air (RH>50\%), but can yield very inaccurate results otherwise, so use it with caution. The \code{"advanced"} method corresponds to the implementation used by NOAA and ECMWF.
+The formula implemented in the \code{"basic"} method is a valid approximation for moist air (RH>50\%), but can yield very inaccurate results otherwise, so use it with caution. The \code{"advanced"} method corresponds to the implementation used by NOAA (https://www.wpc.ncep.noaa.gov/html/dewrh.shtml) and by the ECMWF \code{thermofeel} package (https://github.com/ecmwf/thermofeel).
 }
 \section{Input units}{
 

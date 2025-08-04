@@ -34,7 +34,7 @@
 #' @importFrom udunits2 ud.are.convertible
 #' @importFrom utils packageVersion
 #' @seealso hurs2tdps, performing the inverse calculation to derive dew-point temperature from relative humidity and observed temperature
-#' @note The formula implemented in the \code{"basic"} method is a valid approximation for moist air (RH>50\%), but can yield very inaccurate results otherwise, so use it with caution. The \code{"advanced"} method corresponds to the implementation used by NOAA and ECMWF.
+#' @note The formula implemented in the \code{"basic"} method is a valid approximation for moist air (RH>50\%), but can yield very inaccurate results otherwise, so use it with caution. The \code{"advanced"} method corresponds to the implementation used by NOAA (https://www.wpc.ncep.noaa.gov/html/dewrh.shtml) and by the ECMWF \code{thermofeel} package (https://github.com/ecmwf/thermofeel).
 #' @family derivation
 #' @family humidity
 
