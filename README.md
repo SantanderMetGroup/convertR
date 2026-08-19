@@ -37,19 +37,19 @@ In the following table the available variable derivations are summarized, includ
 The (*) symbol indicates that the function is planned but not yet available.
 
 
-| function  	| Definition                                      	| psl 	| ps 	| tas 	| dpds 	| tdps 	| zgs 	| huss 	| hurs 	| rsds 	| rlds 	|
-|-----------	|-------------------------------------------------	|-----	|----	|-----	|------	|------	|----	|------	|------	|------	|------	|
-| `psl2ps`    	| Sea-level pressure to surface pressure          	| X   	|    	| X   	|      	|      	| X  	|      	|      	|      	|      	|
-| `ps2psl`    	| Surface pressure to sea-level pressure          	|     	| X  	| X   	|      	|      	| X  	|      	|      	|      	|      	|
-| `rad2cc`    	| Radiation to cloud cover                        	|     	|    	|     	|      	|      	|    	|      	|      	| X    	| X    	|
-| `huss2hurs` 	| Specific humidity to relative humidity          	|     	| X  	| X   	|      	|      	|    	| X    	|      	|      	|      	|
-| `hurs2huss` 	| Relative humidity from specific humidity        	|     	| X  	| X   	|      	|      	|    	|      	| X    	|      	|      	|
-| `tas2ws`    	| Saturation vapor pressure from temperature      	|     	| X  	| X   	|      	|      	|    	|      	|      	|      	|      	|
-| `hurs2w`    	| Water vapor mixing ratio from relative humidity 	|     	| X  	| X   	|      	|      	|    	|      	| X    	|      	|      	|
-| `dpds2hurs`* 	| Relative humidity from dew-point depression     	|     	| X  	| X   	| X    	|      	|    	|      	|      	|      	|      	|
-| `tdps2hurs` 	| Relative humidity from dew-point temperature    	|     	|    	| X   	|      	| X    	|    	|      	|      	|      	|      	|
-| `hurs2tdps` 	| Dew-point temperature from relative humidity    	|     	|    	| X   	|      	|     	|    	|      	| X    	|      	|      	|
-| `huss2pvp`  	| Partial vapor pressure from specific humidity   	|     	| X  	|     	|      	|      	|    	| X    	|      	|      	|      	|
+| function  	| Definition                                      	| psl 	| ps 	| tas 	| dpds 	| tdps 	| zgs 	| huss 	| hurs 	| rsds 	| rlds 	| comments |
+|-----------	|-------------------------------------------------	|-----	|----	|-----	|------	|------	|----	|------	|------	|------	|------	| ------	|
+| `psl2ps`    	| Sea-level pressure to surface pressure          	| X   	|    	| X   	|      	|      	| X  	|      	|      	|      	|      	|      | 
+| `ps2psl`    	| Surface pressure to sea-level pressure          	|     	| X  	| X   	|      	|      	| X  	|      	|      	|      	|      	|      |
+| `rad2cc`    	| Radiation to cloud cover                        	|     	|    	|     	|      	|      	|    	|      	|      	| X    	| X    	|      |
+| `huss2hurs` 	| Specific humidity to relative humidity          	|     	| X  	| X   	|      	|      	|    	| X    	|      	|      	|      	| Vapour pressure calculated with `tas2ws` |
+| `hurs2huss` 	| Relative humidity from specific humidity        	|     	| X  	| X   	|      	|      	|    	|      	| X    	|      	|      	| Vapour pressure calculated with `tas2ws` |
+| `tas2ws`    	| Saturation vapor pressure from temperature      	|     	| X  	| X   	|      	|      	|    	|      	|      	|      	|      	| Following Bohren (2000), pages 197-200, over water and ice |  
+| `hurs2w`    	| Water vapor mixing ratio from relative humidity 	|     	| X  	| X   	|      	|      	|    	|      	| X    	|      	|      	| Vapour pressure calculated with `tas2ws` |
+| `dpds2hurs`* 	| Relative humidity from dew-point depression     	|     	| X  	| X   	| X    	|      	|    	|      	|      	|      	|      	|     |
+| `tdps2hurs` 	| Relative humidity from dew-point temperature    	|     	|    	| X   	|      	| X    	|    	|      	|      	|      	|      	| Default method ("advanced") follows NOAA vapour pressure calculation (https://www.wpc.ncep.noaa.gov/html/dewrh.shtml). `method = "basic"` is not advised |
+| `hurs2tdps` 	| Dew-point temperature from relative humidity    	|     	|    	| X   	|      	|     	|    	|      	| X    	|      	|      	| Only basic method (not advised) |
+| `huss2pvp`  	| Partial vapor pressure from specific humidity   	|     	| X  	|     	|      	|      	|    	| X    	|      	|      	|      	|     |
 
 
 The input variables do not require to be in specific units, as all the necessary unit conversions are internally undertaken by the unit converter utility.
