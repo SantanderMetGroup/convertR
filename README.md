@@ -37,19 +37,20 @@ In the following table the available variable derivations are summarized, includ
 The (*) symbol indicates that the function is planned but not yet available.
 
 
-| function  	| Definition                                      	| psl 	| ps 	| tas 	| dpds 	| tdps 	| zgs 	| huss 	| hurs 	| rsds 	| rlds 	|
-|-----------	|-------------------------------------------------	|-----	|----	|-----	|------	|------	|----	|------	|------	|------	|------	|
-| `psl2ps`    	| Sea-level pressure to surface pressure          	| X   	|    	| X   	|      	|      	| X  	|      	|      	|      	|      	|
-| `ps2psl`    	| Surface pressure to sea-level pressure          	|     	| X  	| X   	|      	|      	| X  	|      	|      	|      	|      	|
-| `rad2cc`    	| Radiation to cloud cover                        	|     	|    	|     	|      	|      	|    	|      	|      	| X    	| X    	|
-| `huss2hurs` 	| Specific humidity to relative humidity          	|     	| X  	| X   	|      	|      	|    	| X    	|      	|      	|      	|
-| `hurs2huss` 	| Relative humidity from specific humidity        	|     	| X  	| X   	|      	|      	|    	|      	| X    	|      	|      	|
-| `tas2ws`    	| Saturation vapor pressure from temperature      	|     	| X  	| X   	|      	|      	|    	|      	|      	|      	|      	|
-| `hurs2w`    	| Water vapor mixing ratio from relative humidity 	|     	| X  	| X   	|      	|      	|    	|      	| X    	|      	|      	|
-| `dpds2hurs`* 	| Relative humidity from dew-point depression     	|     	| X  	| X   	| X    	|      	|    	|      	|      	|      	|      	|
-| `tdps2hurs` 	| Relative humidity from dew-point temperature    	|     	|    	| X   	|      	| X    	|    	|      	|      	|      	|      	|
-| `hurs2tdps` 	| Dew-point temperature from relative humidity    	|     	|    	| X   	|      	|     	|    	|      	| X    	|      	|      	|
-| `huss2pvp`  	| Partial vapor pressure from specific humidity   	|     	| X  	|     	|      	|      	|    	| X    	|      	|      	|      	|
+| function  	| Definition                                      	| psl 	| ps 	| tas 	| dpds 	| tdps 	| zgs 	| huss 	| hurs 	| rsds 	| rlds 	| ua(s) | va(s) |
+|-----------	|-------------------------------------------------	|-----	|----	|-----	|------	|------	|----	|------	|------	|------	|------	| ------	|------	|
+| `psl2ps`    	| Sea-level pressure to surface pressure          	| X   	|    	| X   	|      	|      	| X  	|      	|      	|      	|      	|      |      	|
+| `ps2psl`    	| Surface pressure to sea-level pressure          	|     	| X  	| X   	|      	|      	| X  	|      	|      	|      	|      	|      |      	|
+| `rad2cc`    	| Radiation to cloud cover                        	|     	|    	|     	|      	|      	|    	|      	|      	| X    	| X    	|      |      	|
+| `huss2hurs` 	| Specific humidity to relative humidity          	|     	| X  	| X   	|      	|      	|    	| X    	|      	|      	|      	|      |      	|
+| `hurs2huss` 	| Relative humidity from specific humidity        	|     	| X  	| X   	|      	|      	|    	|      	| X    	|      	|      	|      |      	|
+| `tas2ws`    	| Saturation vapor pressure from temperature      	|     	| X  	| X   	|      	|      	|    	|      	|      	|      	|      	|      |      	|
+| `hurs2w`    	| Water vapor mixing ratio from relative humidity 	|     	| X  	| X   	|      	|      	|    	|      	| X    	|      	|      	|      |      	|
+| `dpds2hurs`* | Relative humidity from dew-point depression     	|     	| X  	| X   	| X    	|      	|    	|      	|      	|      	|      	|      |      	|
+| `tdps2hurs` 	| Relative humidity from dew-point temperature    	|     	|    	| X   	|      	| X    	|    	|      	|      	|      	|      	|      |      	|
+| `hurs2tdps` 	| Dew-point temperature from relative humidity    	|     	|    	| X   	|      	|     	 |    	|      	| X    	|      	|      	|      |      	|
+| `huss2pvp`  	| Partial vapor pressure from specific humidity   	|     	| X  	|     	|      	|      	|    	| X    	|      	|      	|      	|      |      	|
+| `uava2ws`  	 | Wind speed from wind components   	              |     	|    	|     	|      	|      	|    	|      	|      	|      	|      	|  X   |   X  	|
 
 
 The input variables do not require to be in specific units, as all the necessary unit conversions are internally undertaken by the unit converter utility.
