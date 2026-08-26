@@ -50,24 +50,24 @@ For the basic approach: Lawrence, Mark G., 2005. The relationship between relati
 \seealso{
 hurs2tdps, performing the inverse calculation to derive dew-point temperature from relative humidity and observed temperature
 
-Other derivation: 
-\code{\link{hurs2huss}()},
-\code{\link{hurs2tdps}()},
-\code{\link{hurs2w}()},
-\code{\link{huss2hurs}()},
-\code{\link{huss2pvp}()},
-\code{\link{ps2psl}()},
-\code{\link{psl2ps}()},
-\code{\link{rad2cc}()},
-\code{\link{tas2ws}()}
+Other derivation:
+\code{\link[=hurs2huss]{hurs2huss()}},
+\code{\link[=hurs2tdps]{hurs2tdps()}},
+\code{\link[=hurs2w]{hurs2w()}},
+\code{\link[=huss2hurs]{huss2hurs()}},
+\code{\link[=huss2pvp]{huss2pvp()}},
+\code{\link[=ps2psl]{ps2psl()}},
+\code{\link[=psl2ps]{psl2ps()}},
+\code{\link[=rad2cc]{rad2cc()}},
+\code{\link[=tas2ws]{tas2ws()}}
 
-Other humidity: 
-\code{\link{hurs2huss}()},
-\code{\link{hurs2tdps}()},
-\code{\link{hurs2w}()},
-\code{\link{huss2hurs}()},
-\code{\link{huss2pvp}()},
-\code{\link{tas2ws}()}
+Other humidity:
+\code{\link[=hurs2huss]{hurs2huss()}},
+\code{\link[=hurs2tdps]{hurs2tdps()}},
+\code{\link[=hurs2w]{hurs2w()}},
+\code{\link[=huss2hurs]{huss2hurs()}},
+\code{\link[=huss2pvp]{huss2pvp()}},
+\code{\link[=tas2ws]{tas2ws()}}
 }
 \author{
 J. Bedia, C. Rodriguez Rumayor

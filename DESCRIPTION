@@ -27,4 +27,4 @@ Encoding: UTF-8
 Description: Implements different variable derivations and unit transformations exploiting the UDUNITS-2 capabilitites for the climate4R CDM (<http://meteo.unican.es/climate4R>).
 License: file LICENSE
 LazyData: true
-RoxygenNote: 7.3.2
+Config/roxygen2/version: 8.1.0

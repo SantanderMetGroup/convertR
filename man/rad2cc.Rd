@@ -43,16 +43,16 @@ cc2 <- rad2cc(rtds = rtds)
 identical(cc2, cc)
 }
 \seealso{
-Other derivation: 
-\code{\link{hurs2huss}()},
-\code{\link{hurs2tdps}()},
-\code{\link{hurs2w}()},
-\code{\link{huss2hurs}()},
-\code{\link{huss2pvp}()},
-\code{\link{ps2psl}()},
-\code{\link{psl2ps}()},
-\code{\link{tas2ws}()},
-\code{\link{tdps2hurs}()}
+Other derivation:
+\code{\link[=hurs2huss]{hurs2huss()}},
+\code{\link[=hurs2tdps]{hurs2tdps()}},
+\code{\link[=hurs2w]{hurs2w()}},
+\code{\link[=huss2hurs]{huss2hurs()}},
+\code{\link[=huss2pvp]{huss2pvp()}},
+\code{\link[=ps2psl]{ps2psl()}},
+\code{\link[=psl2ps]{psl2ps()}},
+\code{\link[=tas2ws]{tas2ws()}},
+\code{\link[=tdps2hurs]{tdps2hurs()}}
 }
 \author{
 J. Bedia, S. Herrera
