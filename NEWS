@@ -32,3 +32,6 @@
  * Add .gitignore
  * Update R CMD check with roxygen2 7.1.2
  * Update examples
+
+## v0.3.0 (26 Aug 2026)
+ * Add uava2ws for wind speed calculation from zonal/meridional components
