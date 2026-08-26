@@ -13,8 +13,8 @@ Suggests:
     climate4R.datasets
 Type: Package
 Title: A climate4R Package for Unit Conversion and Variable Derivation
-Version: 0.2.1
-Date: 2023-06-22
+Version: 0.3.0
+Date: 2026-08-26
 Authors@R: c(person("Bedia", "Joaquín", email = "bediaj@unican.es", role = c("aut","cre"), comment = c(ORCID = "0000-0001-6219-4312")),
              person("Cofiño", "Antonio", email = "cofinoa@unican.es", role = "ctb"),
              person("Herrera", "Sixto", email = "herreras@unican.es", role = "ctb"),
