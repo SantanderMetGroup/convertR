@@ -4,7 +4,13 @@
 \alias{tdps2hurs}
 \title{Relative humidity from Dew-point temperature}
 \usage{
-tdps2hurs(tdps, tas, negatives.to.zero = TRUE)
+tdps2hurs(
+  tdps,
+  tas,
+  negatives.to.zero = TRUE,
+  cap.to.hundred = TRUE,
+  method = "advanced"
+)
 }
 \arguments{
 \item{tdps}{Dew-point temperature}
@@ -12,15 +18,19 @@ tdps2hurs(tdps, tas, negatives.to.zero = TRUE)
 \item{tas}{Near-surface air temperature}
 
 \item{negatives.to.zero}{Logical flag indicating if estimated negative values should be truncated to zero \%. Default to TRUE.}
+
+\item{cap.to.hundred}{Logical flag indicating if estimated values above 100 should be truncated to 100 \%. Default to TRUE.}
+
+\item{method}{Character string indicating the calculation method to use. Options are \code{"basic"} or \code{"advanced"} (default).}
 }
 \value{
 A climate4R CDM grid of estimated relative humidity (in \%)
 }
 \description{
-Estimate the Relative humidity from Dew-point temperature and air temperaure
+Estimate the Relative humidity from Dew-point temperature and air temperature
 }
 \note{
-The formula is a valid aproximation for moist air (RH>50\%), but can yield very inaccurate results otherwise, so use it with caution.
+The formula implemented in the \code{"basic"} method is a valid approximation for moist air (RH>50\%), but can yield very inaccurate results otherwise, so use it with caution. The \code{"advanced"} method corresponds to the implementation used by NOAA (https://www.wpc.ncep.noaa.gov/html/dewrh.shtml) and by the ECMWF \code{thermofeel} package (https://github.com/ecmwf/thermofeel).
 }
 \section{Input units}{
 
@@ -35,32 +45,32 @@ In principle, the derivation functions will work regardless of the input units, 
 The adjustment formulae of pressure values to other levels are those routinely used by the WMO. These are described in the following technical report:
 \url{https://www.wmo.int/pages/prog/www/IMOP/meetings/SI/ET-Stand-1/Doc-10_Pressure-red.pdf}
 
-Lawrence, Mark G., 2005: The relationship between relative humidity and the dewpoint temperature in moist air: A simple conversion and applications. Bull. Amer. Meteor. Soc., 86, 225-233. https://dx.doi.org/10.1175/BAMS-86-2-225
+For the basic approach: Lawrence, Mark G., 2005. The relationship between relative humidity and the dewpoint temperature in moist air: A simple conversion and applications. Bull. Amer. Meteor. Soc., 86, 225-233. https://dx.doi.org/10.1175/BAMS-86-2-225
 }
 \seealso{
 hurs2tdps, performing the inverse calculation to derive dew-point temperature from relative humidity and observed temperature
 
-Other derivation: 
-\code{\link{hurs2huss}()},
-\code{\link{hurs2tdps}()},
-\code{\link{hurs2w}()},
-\code{\link{huss2hurs}()},
-\code{\link{huss2pvp}()},
-\code{\link{ps2psl}()},
-\code{\link{psl2ps}()},
-\code{\link{rad2cc}()},
-\code{\link{tas2ws}()}
+Other derivation:
+\code{\link[=hurs2huss]{hurs2huss()}},
+\code{\link[=hurs2tdps]{hurs2tdps()}},
+\code{\link[=hurs2w]{hurs2w()}},
+\code{\link[=huss2hurs]{huss2hurs()}},
+\code{\link[=huss2pvp]{huss2pvp()}},
+\code{\link[=ps2psl]{ps2psl()}},
+\code{\link[=psl2ps]{psl2ps()}},
+\code{\link[=rad2cc]{rad2cc()}},
+\code{\link[=tas2ws]{tas2ws()}}
 
-Other humidity: 
-\code{\link{hurs2huss}()},
-\code{\link{hurs2tdps}()},
-\code{\link{hurs2w}()},
-\code{\link{huss2hurs}()},
-\code{\link{huss2pvp}()},
-\code{\link{tas2ws}()}
+Other humidity:
+\code{\link[=hurs2huss]{hurs2huss()}},
+\code{\link[=hurs2tdps]{hurs2tdps()}},
+\code{\link[=hurs2w]{hurs2w()}},
+\code{\link[=huss2hurs]{huss2hurs()}},
+\code{\link[=huss2pvp]{huss2pvp()}},
+\code{\link[=tas2ws]{tas2ws()}}
 }
 \author{
-J. Bedia
+J. Bedia, C. Rodriguez Rumayor
 }
 \concept{derivation}
 \concept{humidity}

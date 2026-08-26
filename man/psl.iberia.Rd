@@ -11,17 +11,11 @@ This R data object was obtained using the function \code{loadGridData} from \pkg
  using the following parameters:
 
  \code{loadGridData(dataset = "http://meteo.unican.es/tds5/dodsC/ncepReanalysis1/ncepReanalysis1_4xDaily.ncml",
-
                     var = var,
-
                     years = 1991:1992,
-
                     season = 1:12,
-
                     lonLim = c(-10, 5),
-
                     latLim <- c(35, 43),
-
                     time = "DD")
       }
 

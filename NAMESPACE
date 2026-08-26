@@ -13,12 +13,18 @@ export(tdps2hurs)
 export(uava2ws)
 export(udConvertGrid)
 import(transformeR)
-importFrom(magrittr,"%<>%")
-importFrom(magrittr,"%>%")
-importFrom(magrittr,extract2)
-importFrom(udunits2,ud.are.convertible)
-importFrom(udunits2,ud.convert)
-importFrom(udunits2,ud.is.parseable)
-importFrom(utils,globalVariables)
-importFrom(utils,packageDescription)
-importFrom(utils,packageVersion)
+importFrom(magrittr,
+  "%<>%",
+  "%>%",
+  extract2
+)
+importFrom(udunits2,
+  ud.are.convertible,
+  ud.convert,
+  ud.is.parseable
+)
+importFrom(utils,
+  globalVariables,
+  packageDescription,
+  packageVersion
+)

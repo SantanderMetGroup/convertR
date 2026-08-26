@@ -57,21 +57,21 @@ The adjustment formulae of pressure values to other levels are those routinely u
 \url{https://www.wmo.int/pages/prog/www/IMOP/meetings/SI/ET-Stand-1/Doc-10_Pressure-red.pdf}
 }
 \seealso{
-Other derivation: 
-\code{\link{hurs2huss}()},
-\code{\link{hurs2tdps}()},
-\code{\link{hurs2w}()},
-\code{\link{huss2hurs}()},
-\code{\link{huss2pvp}()},
-\code{\link{ps2psl}()},
-\code{\link{rad2cc}()},
-\code{\link{tas2ws}()},
-\code{\link{tdps2hurs}()}
+Other derivation:
+\code{\link[=hurs2huss]{hurs2huss()}},
+\code{\link[=hurs2tdps]{hurs2tdps()}},
+\code{\link[=hurs2w]{hurs2w()}},
+\code{\link[=huss2hurs]{huss2hurs()}},
+\code{\link[=huss2pvp]{huss2pvp()}},
+\code{\link[=ps2psl]{ps2psl()}},
+\code{\link[=rad2cc]{rad2cc()}},
+\code{\link[=tas2ws]{tas2ws()}},
+\code{\link[=tdps2hurs]{tdps2hurs()}}
 
-Other pressure: 
-\code{\link{huss2pvp}()},
-\code{\link{ps2psl}()},
-\code{\link{tas2ws}()}
+Other pressure:
+\code{\link[=huss2pvp]{huss2pvp()}},
+\code{\link[=ps2psl]{ps2psl()}},
+\code{\link[=tas2ws]{tas2ws()}}
 }
 \author{
 J. Bedia, S. Herrera

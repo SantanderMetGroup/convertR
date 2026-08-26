@@ -1,8 +1,8 @@
 Package: convertR
 Depends:
-    R(>= 3.6.0),
+    R(>= 4.0.0),
     udunits2,
-    transformeR(>= 1.7.2)
+    transformeR(>= 2.2.0)
 Imports:
     magrittr
 Suggests:
@@ -19,6 +19,7 @@ Authors@R: c(person("Bedia", "Joaquín", email = "bediaj@unican.es", role = c("a
              person("Cofiño", "Antonio", email = "cofinoa@unican.es", role = "ctb"),
              person("Herrera", "Sixto", email = "herreras@unican.es", role = "ctb"),
              person("Iturbide", "Maialen", email = "miturbide@ifca.unican.es", role = "ctb"),
+             person("Rodríguez", "Carmen", email = "rodriguezmac@unican.es", role = "ctb"),
              person("Santander Meteorology Group", comment = "<http://www.meteo.unican.es/en>", role = "cph"))
 BugReports: https://github.com/SantanderMetGroup/convertR/issues
 URL: https://github.com/SantanderMetGroup/convertR
@@ -26,4 +27,4 @@ Encoding: UTF-8
 Description: Implements different variable derivations and unit transformations exploiting the UDUNITS-2 capabilitites for the climate4R CDM (<http://meteo.unican.es/climate4R>).
 License: file LICENSE
 LazyData: true
-RoxygenNote: 7.1.2
+Config/roxygen2/version: 8.1.0
