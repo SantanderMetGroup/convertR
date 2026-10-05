@@ -30,7 +30,7 @@ A climate4R CDM grid of estimated relative humidity (in \%)
 Estimate the Relative humidity from Dew-point temperature and air temperature
 }
 \note{
-The formula implemented in the \code{"basic"} method is a valid approximation for moist air (RH>50\%), but can yield very inaccurate results otherwise, so use it with caution. The \code{"advanced"} method corresponds to the implementation used by NOAA and ECMWF.
+The formula implemented in the \code{"basic"} method is a valid approximation for moist air (RH>50\%), but can yield very inaccurate results otherwise, so use it with caution. The \code{"advanced"} method corresponds to the implementation used by NOAA and ECMWF and computes the saturation vapour pressure following the \pkg{thermofeel} implementation (ECMWF IFS Documentation CY45R1, Part IV, 2018, p. 116): over liquid water (T >= 273.16 K), the Buck (1981) approximation is used; over ice (T < 273.16 K), the Alduchov and Eskridge (1996) approximation is used.
 }
 \section{Input units}{
 
@@ -45,7 +45,13 @@ In principle, the derivation functions will work regardless of the input units, 
 The adjustment formulae of pressure values to other levels are those routinely used by the WMO. These are described in the following technical report:
 \url{https://www.wmo.int/pages/prog/www/IMOP/meetings/SI/ET-Stand-1/Doc-10_Pressure-red.pdf}
 
-For the basic approach: Lawrence, Mark G., 2005. The relationship between relative humidity and the dewpoint temperature in moist air: A simple conversion and applications. Bull. Amer. Meteor. Soc., 86, 225-233. https://dx.doi.org/10.1175/BAMS-86-2-225
+For the basic approach: Lawrence, Mark G. (2005). The relationship between relative humidity and the dewpoint temperature in moist air: A simple conversion and applications. Bull. Amer. Meteor. Soc., 86, 225-233. https://dx.doi.org/10.1175/BAMS-86-2-225 
+
+Buck, A.L. (1981). New equations for computing vapor pressure and enhancement factor. Journal of Applied Meteorology, 20, 1527-1532.
+
+Alduchov, O.A. and Eskridge, R.E. (1996). Improved Magnus form approximation of saturation vapor pressure. Journal of Applied Meteorology, 35, 601-609.
+
+ECMWF IFS Documentation CY45R1 - Part IV: Physical Processes (2018), p. 116. https://doi.org/10.21957/4whwo8jw0
 }
 \seealso{
 hurs2tdps, performing the inverse calculation to derive dew-point temperature from relative humidity and observed temperature

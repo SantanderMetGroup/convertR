@@ -29,12 +29,19 @@
 #' @export
 #' @template templateRefPressure
 #' @import transformeR
-#' @references For the basic approach: Lawrence, Mark G., 2005. The relationship between relative humidity and the dewpoint temperature in moist air: A simple conversion and applications. Bull. Amer. Meteor. Soc., 86, 225-233. https://dx.doi.org/10.1175/BAMS-86-2-225 
+#' @references For the basic approach: Lawrence, Mark G. (2005). The relationship between relative humidity and the dewpoint temperature in moist air: A simple conversion and applications. Bull. Amer. Meteor. Soc., 86, 225-233. https://dx.doi.org/10.1175/BAMS-86-2-225 
+#' 
+#' Buck, A.L. (1981). New equations for computing vapor pressure and enhancement factor. Journal of Applied Meteorology, 20, 1527-1532.
+#' 
+#' Alduchov, O.A. and Eskridge, R.E. (1996). Improved Magnus form approximation of saturation vapor pressure. Journal of Applied Meteorology, 35, 601-609.
+#' 
+#' ECMWF IFS Documentation CY45R1 - Part IV: Physical Processes (2018), p. 116. https://doi.org/10.21957/4whwo8jw0
+#' 
 #' @importFrom magrittr %>% %<>% extract2
 #' @importFrom udunits2 ud.are.convertible
 #' @importFrom utils packageVersion
 #' @seealso hurs2tdps, performing the inverse calculation to derive dew-point temperature from relative humidity and observed temperature
-#' @note The formula implemented in the \code{"basic"} method is a valid approximation for moist air (RH>50\%), but can yield very inaccurate results otherwise, so use it with caution. The \code{"advanced"} method corresponds to the implementation used by NOAA and ECMWF.
+#' @note The formula implemented in the \code{"basic"} method is a valid approximation for moist air (RH>50\%), but can yield very inaccurate results otherwise, so use it with caution. The \code{"advanced"} method corresponds to the implementation used by NOAA and ECMWF and computes the saturation vapour pressure following the \pkg{thermofeel} implementation (ECMWF IFS Documentation CY45R1, Part IV, 2018, p. 116): over liquid water (T >= 273.16 K), the Buck (1981) approximation is used; over ice (T < 273.16 K), the Alduchov and Eskridge (1996) approximation is used.
 #' @family derivation
 #' @family humidity
 
@@ -80,11 +87,23 @@ tdps2hurs <- function(tdps, tas, negatives.to.zero = TRUE, cap.to.hundred = TRUE
         dp <- subsetGrid(tdps, members = x, drop = TRUE) %>% redim(member = FALSE) %>% extract2("Data") %>% array3Dto2Dmat()
         t <- subsetGrid(tas, members = x, drop = TRUE) %>% redim(member = FALSE) %>% extract2("Data") %>% array3Dto2Dmat()
         if (method == "basic") {
-          aux <- 100 - 5*(t - dp)
+            aux <- 100 - 5*(t - dp)
         } else {
-          e  <- 6.11 * 10.0 ^ (7.5 * dp / (237.3 + dp))  # vapour pressure
-          es <- 6.11 * 10.0 ^ (7.5 * t / (237.3 + t))  # saturated vapour pressure
-          aux <- (e / es) * 100
+            T0 <- 273.16         # triple point of water (0.01 °C) at 611.73 Pa, ECMWF convention
+            t_k <- t + 273.15    # convert to Kelvin
+
+            # Saturation vapour pressure, ECMWF convention
+            es <- rep(0, length(t_k))
+            waterMask <- which(t_k >= T0)
+            iceMask <- which(t_k < T0)
+            y_water <- (t_k - T0) / (t_k - 32.19)   # over liquid water (Buck, 1981)
+            y_ice <- (t_k - T0) / (t_k + 0.7)       # over ice (Alduchov & Eskridge, 1996)
+            es[waterMask] <- 6.1121 * exp(17.502 * y_water[waterMask])
+            es[iceMask] <- 6.1121 * exp(22.587 * y_ice[iceMask])
+
+            e  <- 6.11 * 10.0 ^ (7.5 * dp / (237.3 + dp))  # vapour pressure
+            # es <- 6.11 * 10.0 ^ (7.5 * t / (237.3 + t))  # old saturated vapour pressure
+            aux <- (e / es) * 100
         }
         if (isTRUE(negatives.to.zero)) aux[which(aux < 0)] <- 0
         if (isTRUE(cap.to.hundred)) aux[which(aux > 100)] <- 100
