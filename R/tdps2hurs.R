@@ -125,26 +125,38 @@ tdps2hurs <- function(tdps, tas, negatives.to.zero = TRUE, cap.to.hundred = TRUE
 
 
 
-#' @title Relative humidity from Dew-point temperature
-#' @description Estimate the Relative humidity from Dew-point temperature and air temperaure
-#' @param hurs relative humidity 
+#' @title Dew-point temperature from Relative humidity
+#' @description Estimate the Dew-point temperature from Relative humidity and air temperature
+#' @param hurs Relative humidity 
 #' @param tas Near-surface air temperature
+#' @param method Character string indicating the calculation method to use. Options are \code{"basic"} or \code{"advanced"} (default).
 #' @return A climate4R CDM grid of estimated dew-point temperature (in degC)
-#' @author J. Bedia
+#' @author J. Bedia, C. Rodriguez Rumayor
 #' @template templateUnits
 #' @export
 #' @template templateRefPressure
 #' @import transformeR
-#' @references Lawrence, Mark G., 2005: The relationship between relative humidity and the dewpoint temperature in moist air: A simple conversion and applications. Bull. Amer. Meteor. Soc., 86, 225-233. https://dx.doi.org/10.1175/BAMS-86-2-225 
+#' @references For the basic approach: Lawrence, Mark G. (2005). The relationship between relative humidity and the dewpoint temperature in moist air: A simple conversion and applications. Bull. Amer. Meteor. Soc., 86, 225-233. https://dx.doi.org/10.1175/BAMS-86-2-225 
+#' 
+#' Buck, A.L. (1981). New equations for computing vapor pressure and enhancement factor. Journal of Applied Meteorology, 20, 1527-1532.
+#' 
+#' Alduchov, O.A. and Eskridge, R.E. (1996). Improved Magnus form approximation of saturation vapor pressure. Journal of Applied Meteorology, 35, 601-609.
+#' 
+#' ECMWF IFS Documentation CY45R1 - Part IV: Physical Processes (2018), p. 116. https://doi.org/10.21957/4whwo8jw0
+#' 
 #' @importFrom magrittr %>% %<>% extract2
 #' @importFrom udunits2 ud.are.convertible
 #' @importFrom utils packageVersion
 #' @seealso tdps2hurs, performing the inverse calculation to derive relative humidity from dew-point temperature and observed temperature
-#' @note The formula is a valid aproximation for moist air (RH>50\%), but can yield very inaccurate results otherwise, so use it with caution.
+#' @note The formula implemented in the \code{"basic"} method is a valid approximation for moist air (RH>50\%), but can yield very inaccurate results otherwise, so use it with caution. The \code{"advanced"} method corresponds to the implementation used by NOAA and ECMWF and computes the saturation vapour pressure following the \pkg{thermofeel} implementation (ECMWF IFS Documentation CY45R1, Part IV, 2018, p. 116): over liquid water (T >= 273.16 K), the Buck (1981) approximation is used; over ice (T < 273.16 K), the Alduchov and Eskridge (1996) approximation is used.
 #' @family derivation
 #' @family humidity
 
-hurs2tdps <- function(hurs, tas) {
+hurs2tdps <- function(hurs, tas, method = "advanced") {
+    method <- match.arg(method, choices = c("basic", "advanced"), several.ok = FALSE)
+    if (method == "basic") {
+         warning("The 'basic' tdps estimation may be inaccurate. Check function documentation.")
+    }
     # Consistency checks:
     if (isMultigrid(hurs) | isMultigrid(tas)) stop("Multigrids are not an allowed input")
     stopifnot(isGrid(hurs) | isGrid(tas))
@@ -172,6 +184,10 @@ hurs2tdps <- function(hurs, tas) {
         message("[", Sys.time(), "] Converting temperature units ...")
         tas %<>% udConvertGrid(new.units = "degC") %>% redim(member = TRUE)
     }
+    # Check hurs values
+    if (any(hurs$Data < 0 | hurs$Data > 100, na.rm = TRUE)) {
+        stop("Some relative humidity values are outside the expected [0, 100] range")
+    }
     coords <- getCoordinates(hurs)
     n.mem <- getShape(hurs, "member")
     message("[", Sys.time(), "] Deriving dew-point temperature ...")
@@ -179,8 +195,25 @@ hurs2tdps <- function(hurs, tas) {
     l <- lapply(1:n.mem, function(x) {
         rh <- subsetGrid(hurs, members = x, drop = TRUE) %>% redim(member = FALSE) %>% extract2("Data") %>% array3Dto2Dmat()
         t <- subsetGrid(tas, members = x, drop = TRUE) %>% redim(member = FALSE) %>% extract2("Data") %>% array3Dto2Dmat()
-        aux <- t - ((100 - rh) / 5)
-        # if (isTRUE(negatives.to.zero)) aux[which(aux < 0)] <- 0
+        if (method == "basic") {
+            aux <- t - ((100 - rh) / 5)
+        } else {
+            T0 <- 273.16         # triple point of water (0.01 °C) at 611.73 Pa, ECMWF convention
+            t_k <- t + 273.15    # convert to Kelvin
+
+            # Saturation vapour pressure, ECMWF convention
+            es <- rep(0, length(t_k))
+            waterMask <- which(t_k >= T0)
+            iceMask <- which(t_k < T0)
+            y_water <- (t_k - T0) / (t_k - 32.19)   # over liquid water (Buck, 1981)
+            y_ice <- (t_k - T0) / (t_k + 0.7)       # over ice (Alduchov & Eskridge, 1996)
+            es[waterMask] <- 6.1121 * exp(17.502 * y_water[waterMask])
+            es[iceMask] <- 6.1121 * exp(22.587 * y_ice[iceMask])
+
+            e <- (rh / 100) * es   # vapour pressure from relative humidity
+            aux <- (237.3 * log10(e / 6.11)) / (7.5 - log10(e / 6.11))
+            aux[which(rh == 0)] <- NA
+        }
         tdps$Data <- mat2Dto3Darray(aux, coords$x, coords$y)
         return(tdps)
     })
